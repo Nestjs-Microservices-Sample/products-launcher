@@ -24,4 +24,5 @@ services:
     volumes:
       - ./products-ms:/usr/src/app:delegated
     environment:
+      - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
