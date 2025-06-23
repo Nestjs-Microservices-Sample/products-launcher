@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  nats-server:
+    image: nats:latest
+    ports:
+      - '8222:8222'
+
+  client-gateway:
+    build:
+      context: ./client-gateway
+      dockerfile: Dockerfile
+    ports:
+      - ${CLIENT_GATEWAY_PORT}:3000
+    volumes:
+      - ./client-gateway:/usr/src/app:delegated
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats-server:4222
+
+  products-ms:
+    build:
+      context: ./products-ms
+    volumes:
+      - ./products-ms:/usr/src/app:delegated
+    environment:
+      - NATS_SERVERS=nats://nats-server:4222
